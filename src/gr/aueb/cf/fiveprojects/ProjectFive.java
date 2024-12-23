@@ -6,6 +6,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ProjectFive {
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_WHITE = "\u001B[0m";
     public static void main(String[] args) {
 
         boolean room[][] = new boolean[30][12];
@@ -69,8 +71,11 @@ public class ProjectFive {
             for (int j = 0; j < arr[i].length; j++) {
                 if (arr[i][j]) {
                     booked = "F";
-                } else booked = "E";
-                System.out.print(i+1 + "" + (char)(j+65) + ":" + booked + "|");
+                    System.out.print(ANSI_RED + (i+1) + "" + (char)(j+65) + ":" + booked + ANSI_WHITE + "|");
+                } else {
+                    booked = "E";
+                    System.out.print((i+1) + "" + (char)(j+65) + ":" + booked + "|");
+                }
             }
             System.out.println();
         }
@@ -78,22 +83,34 @@ public class ProjectFive {
 
     public static  int chooseRow() throws InputMismatchException {
         try {
-        Scanner in = new Scanner(System.in);
-        System.out.print("Παρακαλώ επιλέξτε σειρά (1-30): ");
-        return in.nextInt();
+            Scanner in = new Scanner(System.in);
+            int row = 0;
+
+            System.out.print("Παρακαλώ επιλέξτε σειρά (1-30): ");
+
+            row = in.nextInt();
+            while (row < 1 || row > 30) {
+                System.out.print("Παρακαλώ επιλέξτε έγκυρη σειρά (1-30): ");
+                row = in.nextInt();
+            }
+            return row;
         } catch (InputMismatchException e) {
-            System.out.println("Λαθασμένη επιλογή. Παρακαλώ επιλέξτε έναν αριθμό (1-30).");
+            System.out.println("Λανθασμένη επιλογή.");
             throw e;
         }
-
     }
     public static char chooseColumn() {
 
         Scanner in = new Scanner(System.in);
         String c;
-        int n = 0;
+
         System.out.print("Παρακαλώ επιλέξτε θέση (A-L): ");
         c = in.nextLine();
+
+        while ((int) c.charAt(0) < 65 || (int) c.charAt(0) > 76 ) {
+            System.out.print("Παρακαλώ επιλέξτε μια έγκυρη θέση (A-L): ");
+            c = in.nextLine();
+        }
         return c.charAt(0);
 
     }
